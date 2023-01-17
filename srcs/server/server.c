@@ -10,12 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stdio.h"
+#include "../../minitalk.h"
 
 int	main(int argc, char **argv)
 {
+	pid_t	pid;
+
 	(void) argc;
 	(void ) argv;
-	printf("SERVER\n");
+	pid = getpid();
+	ft_printf("PID : %d\n", pid);
 	return (0);
 }

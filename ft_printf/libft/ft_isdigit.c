@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: synicole <synicole@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: synicole <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/17 15:45:45 by synicole          #+#    #+#             */
-/*   Updated: 2023/01/17 15:45:49 by synicole         ###   ########.fr       */
+/*   Created: 2022/10/10 17:15:13 by synicole          #+#    #+#             */
+/*   Updated: 2022/10/10 17:15:19 by synicole         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minitalk.h"
-
-int	main(int argc, char **argv)
+int	ft_isdigit(int c)
 {
-	(void) argc;
-	(void ) argv;
-	ft_printf("CLIENT\n");
+	if (c >= '0' && c <= '9')
+		return (1);
 	return (0);
 }

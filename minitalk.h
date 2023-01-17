@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   minitalk.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: synicole <synicole@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/17 15:45:45 by synicole          #+#    #+#             */
-/*   Updated: 2023/01/17 15:45:49 by synicole         ###   ########.fr       */
+/*   Created: 2023/01/17 16:41:00 by synicole          #+#    #+#             */
+/*   Updated: 2023/01/17 16:41:02 by synicole         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minitalk.h"
+#ifndef MINITALK_H
+# define MINITALK_H
 
-int	main(int argc, char **argv)
-{
-	(void) argc;
-	(void ) argv;
-	ft_printf("CLIENT\n");
-	return (0);
-}
+/**
+ * Libraries
+*/
+# include <stdio.h>
+# include <unistd.h>
+# include "ft_printf/ft_printf.h"
+
+#endif

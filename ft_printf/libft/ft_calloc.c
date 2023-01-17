@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: synicole <synicole@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: synicole <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/17 15:45:45 by synicole          #+#    #+#             */
-/*   Updated: 2023/01/17 15:45:49 by synicole         ###   ########.fr       */
+/*   Created: 2022/10/13 17:30:04 by synicole          #+#    #+#             */
+/*   Updated: 2022/10/13 17:30:06 by synicole         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minitalk.h"
+#include "libft.h"
 
-int	main(int argc, char **argv)
+void	*ft_calloc(size_t count, size_t size)
 {
-	(void) argc;
-	(void ) argv;
-	ft_printf("CLIENT\n");
-	return (0);
+	void	*ptr;
+
+	ptr = malloc(size * count);
+	if (!ptr)
+		return (0);
+	ft_memset(ptr, 0, size * count);
+	return (ptr);
 }

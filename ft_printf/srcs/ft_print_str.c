@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   ft_print_str.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: synicole <synicole@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: synicole <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/17 15:45:45 by synicole          #+#    #+#             */
-/*   Updated: 2023/01/17 15:45:49 by synicole         ###   ########.fr       */
+/*   Created: 2022/10/22 20:14:13 by synicole          #+#    #+#             */
+/*   Updated: 2022/10/22 20:14:14 by synicole         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minitalk.h"
+#include "../ft_printf.h"
 
-int	main(int argc, char **argv)
+int	ft_print_str(char *str)
 {
-	(void) argc;
-	(void ) argv;
-	ft_printf("CLIENT\n");
-	return (0);
+	int	i;
+
+	i = 0;
+	if (str == NULL)
+	{
+		ft_putstr_fd("(null)", 1);
+		return (6);
+	}
+	while (str[i])
+	{
+		write(1, &str[i], 1);
+		i++;
+	}
+	return (i);
 }

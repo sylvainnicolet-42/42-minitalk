@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: synicole <synicole@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: synicole <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/17 15:45:45 by synicole          #+#    #+#             */
-/*   Updated: 2023/01/17 15:45:49 by synicole         ###   ########.fr       */
+/*   Created: 2022/10/11 19:46:27 by synicole          #+#    #+#             */
+/*   Updated: 2022/10/11 19:46:28 by synicole         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minitalk.h"
+#include "libft.h"
 
-int	main(int argc, char **argv)
+char	*ft_strrchr(const char *s, int c)
 {
-	(void) argc;
-	(void ) argv;
-	ft_printf("CLIENT\n");
+	int	i;
+
+	i = ft_strlen(s);
+	while (i >= 0)
+	{
+		if (s[i] == ((char)c))
+			return ((char *)s + i);
+		i--;
+	}
 	return (0);
 }

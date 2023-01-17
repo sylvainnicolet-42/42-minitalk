@@ -1,21 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: synicole <synicole@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: synicole <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/17 15:45:45 by synicole          #+#    #+#             */
-/*   Updated: 2023/01/17 15:45:49 by synicole         ###   ########.fr       */
+/*   Created: 2022/10/12 18:34:31 by synicole          #+#    #+#             */
+/*   Updated: 2022/10/12 18:34:33 by synicole         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minitalk.h"
+#include "libft.h"
 
-int	main(int argc, char **argv)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	(void) argc;
-	(void ) argv;
-	ft_printf("CLIENT\n");
-	return (0);
+	size_t	i;
+
+	if (dstsize)
+	{
+		i = 0;
+		while (src[i] && i < dstsize - 1)
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = 0;
+	}
+	return (ft_strlen(src));
 }

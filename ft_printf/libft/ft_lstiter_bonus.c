@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   ft_lstiter_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: synicole <synicole@student.42lausanne.ch>  +#+  +:+       +#+        */
+/*   By: synicole <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/17 15:45:45 by synicole          #+#    #+#             */
-/*   Updated: 2023/01/17 15:45:49 by synicole         ###   ########.fr       */
+/*   Created: 2022/10/19 18:31:43 by synicole          #+#    #+#             */
+/*   Updated: 2022/10/19 18:31:49 by synicole         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minitalk.h"
+#include "libft.h"
 
-int	main(int argc, char **argv)
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	(void) argc;
-	(void ) argv;
-	ft_printf("CLIENT\n");
-	return (0);
+	if (lst && f)
+	{
+		while (lst)
+		{
+			f(lst->content);
+			lst = lst->next;
+		}
+	}
 }
