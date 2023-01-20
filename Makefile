@@ -22,10 +22,10 @@ CLIENT_OBJ		= $(CLIENT_SRC:.c=.o)
 SERVER_OBJ		= $(SERVER_SRC:.c=.o)
 
 # SOURCES
-CLIENT_SRC	= ./srcs/client/client.c
+CLIENT_SRC	= ./srcs/client/client.c \
+			  ./srcs/utils/print.c
 SERVER_SRC 	= ./srcs/server/server.c \
-			  ./srcs/utils/ft_error.c \
-			  ./srcs/utils/ft_recursive_power.c
+			  ./srcs/utils/print.c
 
 # COLORS
 _END=$'\x1b[0m'

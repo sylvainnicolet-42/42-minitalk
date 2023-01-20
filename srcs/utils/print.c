@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_recursive_power.c                               :+:      :+:    :+:   */
+/*   print.c                                      :      +:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: synicole <synicole@student.42lausanne.ch>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/20 10:06:29 by synicole          #+#    #+#             */
-/*   Updated: 2023/01/20 10:06:30 by synicole         ###   ########.fr       */
+/*   Created: 2023/01/20 16:02:05 by synicole          #+#    #+#             */
+/*   Updated: 2023/01/20 16:02:07 by synicole         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../minitalk.h"
+
 /**
- * int	ft_recursive_power(int nb, int power)
- * This function returns the result of nb ^ power
- * Example: ft_recursive_power(2, 3) = 2 ^ 3 = 8
-*/
-int	ft_recursive_power(int nb, int power)
+ * Print text in green.
+ */
+void	ft_print_success(char *str)
 {
-	if (power < 0)
-		return (0);
-	else if (power == 0)
-		return (1);
-	else
-		return (nb * ft_recursive_power(nb, power - 1));
+	ft_printf("\033[0;32m");
+	ft_printf("%s\n", str);
+	exit(EXIT_SUCCESS);
+}
+
+/**
+ * Print text in red.
+ */
+void	ft_print_error(char *str)
+{
+	ft_printf("\033[0;31m");
+	ft_printf("%s\n", str);
+	exit(EXIT_FAILURE);
 }

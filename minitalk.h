@@ -22,20 +22,9 @@
 # include "ft_printf/ft_printf.h"
 
 /**
- * Constants
+ * Print
 */
-# define WAIT_TIME 1
-
-/**
- * Server
-*/
-void	ft_start_server(void);
-void	ft_signal_handler(int signal);
-
-/**
- * Utils
-*/
-void		ft_error(void);
-int			ft_recursive_power(int nb, int power);
+void	ft_print_success(char *str);
+void	ft_print_error(char *str);
 
 #endif

@@ -12,29 +12,18 @@
 
 #include "../../minitalk.h"
 
-/**
- * TODO Understand while
-*/
-int	main(void)
+static void	extended_action(char *c, int *received, int *client_pid, int *bit)
 {
-	ft_start_server();
-	ft_printf("PID: %d\n", getpid());
-	while (1)
+	ft_printf("%c", *c);
+	if (*c == '\0')
 	{
-		usleep(WAIT_TIME);
+		*received = 0;
+		*c = 0;
+		if (kill(*client_pid, SIGUSR1) == -1)
+			ft_printf("Error...\n");
+		return ;
 	}
-}
-
-/**
- * Listen signals SIGUSR1 & SIGUSR2.
- *
- * SIGUSR1 (30): Defines bit 0
- * SIGUSR2 (31): Defines bit 1
-// */
-void	ft_start_server(void)
-{
-	signal(SIGUSR1, ft_signal_handler);
-	signal(SIGUSR2, ft_signal_handler);
+	*bit = 0;
 }
 
 /**
@@ -43,69 +32,61 @@ void	ft_start_server(void)
  *
  * @param int signal
  */
-void	ft_signal_handler(int signal)
+static void	ft_signal_handler(int signal, siginfo_t *info, void *context)
 {
-	printf("%d\n", signal);
-//	static int	char_value = 0;
-//	static int	current_bit = 0;
-//	static int	len_received = 0;
-//	static int	i = 0;
-//	static char	*final_str = 0;
-//
-//	if (!len_received)
-//		ft_receive_strlen(&current_bit, &final_str, &len_received, signal);
-//	else
-//	{
-//		if (signal == SIGUSR2)
-//			char_value += ft_recursive_power(2, current_bit);
-//		if (current_bit == 7)
-//		{
-//			final_str[i++] = char_value;
-//			current_bit = 0;
-//			if (char_value == 0)
-//				return (ft_restart_variables(&len_received, &final_str, &i));
-//			char_value = 0;
-//			return ;
-//		}
-//		current_bit++;
-//	}
+	static int	client_pid;
+	static int	bit;
+	static char	c;
+	static int	received;
+	static int	current_pid;
+
+	(void) context;
+	if (!client_pid)
+		client_pid = info->si_pid;
+	current_pid = info->si_pid;
+	if (client_pid != current_pid)
+	{
+		client_pid = current_pid;
+		bit = 0;
+		c = 0;
+		received = 0;
+	}
+	c |= (signal == SIGUSR2);
+	received++;
+	bit++;
+	if (bit == 8)
+		extended_action(&c, &received, &client_pid, &bit);
+	c <<= 1;
+	usleep(100);
+	kill(client_pid, SIGUSR2);
 }
 
 /**
- * static int ft_receive_strlen(int curr_bit)
- * This is the function used in the first step to extract the length of the
- * final string and initiate the string which will be displayed at the end.
+ * Listen signals SIGUSR1 & SIGUSR2.
+ *
+ * SIGUSR1 (30): Defines bit 0
+ * SIGUSR2 (31): Defines bit 1
 */
-//static void	ft_receive_strlen(int *curr_bit, char **str, int *received, int s)
-//{
-//	static int	len_val = 0;
-//
-//	if (s == SIGUSR2)
-//		len_val += ft_recursive_power(2, *curr _bit);
-//	if (*curr_bit == 31)
-//	{
-//		*received = 1;
-//		*str = ft_calloc(len_val + 1, sizeof(char));
-//		*curr_bit = 0;
-//		len_val = 0;
-//		return ;
-//	}
-//	(*curr_bit)++;
-//}
+static void	ft_start_server(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = ft_signal_handler;
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
+	while (1)
+	{
+		pause();
+	}
+}
 
 /**
- * static void	ft_restart_variables(int *len_received, char **str, int *i)
- * This function is called at the end of the execution of the program
- * after displaying the string in order to reset all of the variables values
+ * TODO Understand while
 */
-//static void	ft_restart_variables(int *len_received, char **str, int *i)
-//{
-//	*len_received = 0;
-//	if (str)
-//	{
-//		ft_printf("%s\n", *str);
-//		free(*str);
-//		*str = 0;
-//	}
-//	*i = 0;
-//}
+int	main(void)
+{
+	ft_printf("PID: [%d]\n", getpid());
+	ft_start_server();
+	return (EXIT_FAILURE);
+}
