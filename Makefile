@@ -23,7 +23,9 @@ SERVER_OBJ		= $(SERVER_SRC:.c=.o)
 
 # SOURCES
 CLIENT_SRC	= ./srcs/client/client.c
-SERVER_SRC 	= ./srcs/server/server.c
+SERVER_SRC 	= ./srcs/server/server.c \
+			  ./srcs/utils/ft_error.c \
+			  ./srcs/utils/ft_recursive_power.c
 
 # COLORS
 _END=$'\x1b[0m'
