@@ -40,9 +40,15 @@ static void	char_to_bin(char c, int pid)
 }
 
 /**
- * TODO
+ * Send message.
+ * Transform each char from string to binary.
+ *
+ * @param char *str
+ * @param int pid
+ *
+ * @return void
 */
-static void	send_message(char *str, int pid)
+static void	ft_send_message(char *str, int pid)
 {
 	int	i;
 
@@ -58,6 +64,8 @@ static void	send_message(char *str, int pid)
  * @param int signal
  * @param siginfo_t *info
  * @param void *context
+ *
+ * @return void
 */
 static void	ft_signal_handler(int signal, siginfo_t *info, void *context)
 {
@@ -72,6 +80,10 @@ static void	ft_signal_handler(int signal, siginfo_t *info, void *context)
 
 /**
  * Listen signals SIGUSR1 & SIGUSR2.
+ *
+ * @param void
+ *
+ * @return void
 */
 static void	ft_start_server(void)
 {
@@ -88,9 +100,12 @@ static void	ft_start_server(void)
  * 2. Convert PID to int.
  * 3. Start server to receive signal from server
  * 4. Send message to desired process
+ * 5. Wait a reply from server
  *
  * @param int argc
  * @param char **argv
+ *
+ * @return int
 */
 int	main(int argc, char **argv)
 {
@@ -100,7 +115,7 @@ int	main(int argc, char **argv)
 	{
 		ft_start_server();
 		server_pid = ft_atoi(argv[1]);
-		send_message(argv[2], server_pid);
+		ft_send_message(argv[2], server_pid);
 		if (!sleep(10))
 			ft_print_error("Server signal was not received ❌ !");
 	}
