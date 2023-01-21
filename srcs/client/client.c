@@ -13,29 +13,74 @@
 #include "../../minitalk.h"
 
 /**
- * TODO
+ * Convert char to binary and send them through signals.
+ *
+ * 1. Check bit is 0 or 1.
+ * 		SIGUSR1 (30): Defines bit 0.
+ * 		SIGUSR2 (31): Defines bit 1.
+ * 2. For each case, send a signal with the kill() function.
+ * 3. Check if the kill() function was successful.
+ * 4. Suspend the execution with the pause() function
+ * 	  until a return signal is received.
+ *
+ * -----------------------------------------------------------------------------
+ *
+ * Help:
+ * An octet or a byte consists of eight bits of information.
+ * MSB = most significant bit.
+ * Operator "<<": Shift all the bits of a number to the left
+ * 				  by a certain number of positions.
+ * Operator "&": Returns a result which is 1 if both bits are 1.
+ *
+ * -----------------------------------------------------------------------------
+ *
+ * Example:
+ * Character "a" in ASCII = 97 and in binary = 0110 0001.
+ *
+ * Iteration 1:
+ * 1. (1 << 7) Takes the value 1 (0001) and shifts 7 positions to the left to
+ * 	  obtain (10000000), which is equal to 128 in decimal.
+ * 2. (97 & 128)
+ * 	  0110 0001
+ *    1000 0000
+ *    ---------
+ *    0000 0000 = 0 -> Return 0 Because 64 == 0.
+ *
+ * Iteration 2:
+ * 1. (1 << 6) Takes the value 1 (0001) and shifts 6 positions to the left to
+ * 	  obtain (01000000), which is equal to 64 in decimal.
+ * 2. (97 & 64)
+ *    0110 0001
+ *    0100 0000
+ *    ---------
+ *    0100 0000 = 64 -> Return 1 Because 64 != 0.
+ *
+ * -----------------------------------------------------------------------------
+ *
+ * @param char c
+ * @param int pid
+ *
+ * @return void
 */
-static void	char_to_bin(char c, int pid)
+static void	char_to_binary(char c, int pid)
 {
-	int	bit;
+	int	i;
 
-	bit = 0;
-	while (bit < 8)
+	i = 7;
+	while (i >= 0)
 	{
-		if (c & 128)
+		if (c & (1 << i))
 		{
 			if (kill(pid, SIGUSR2) == -1)
-				ft_printf("Error...\n");
+				ft_print_error("Can't reach the process...");
 		}
 		else
 		{
 			if (kill(pid, SIGUSR1) == -1)
-				ft_printf("Error...\n");
+				ft_print_error("Can't reach the process...");
 		}
-		c <<= 1;
-		bit++;
+		i--;
 		pause();
-		usleep(100);
 	}
 }
 
@@ -54,11 +99,15 @@ static void	ft_send_message(char *str, int pid)
 
 	i = 0;
 	while (str[i])
-		char_to_bin(str[i++], pid);
-	char_to_bin('\0', pid);
+	{
+		char_to_binary(str[i], pid);
+		i++;
+	}
+	char_to_binary('\0', pid);
 }
 
 /**
+ * TODO Why only SIGUSR1?
  * Handle a signal.
  *
  * @param int signal
@@ -69,13 +118,15 @@ static void	ft_send_message(char *str, int pid)
 */
 static void	ft_signal_handler(int signal, siginfo_t *info, void *context)
 {
-	int	client_pid;
+	int			client_pid;
 
-	(void) signal;
 	(void) context;
-	client_pid = info->si_pid;
-	ft_printf("PID: [%d]\n", client_pid);
-	ft_print_success("Server signal successfully received ✅ !");
+	if (signal == SIGUSR1)
+	{
+		client_pid = info->si_pid;
+		ft_printf("Response from [%d]\n", client_pid);
+		ft_print_success("Server signal successfully received ✅ !");
+	}
 }
 
 /**
@@ -99,8 +150,8 @@ static void	ft_start_server(void)
  * 1. Check if there is 3 arguments.
  * 2. Convert PID to int.
  * 3. Start server to receive signal from server
- * 4. Send message to desired process
- * 5. Wait a reply from server
+ * 4. Send message to the desired process
+ * 5. Wait a reply from server (max 10 seconds)
  *
  * @param int argc
  * @param char **argv

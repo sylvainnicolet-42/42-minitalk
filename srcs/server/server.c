@@ -12,6 +12,9 @@
 
 #include "../../minitalk.h"
 
+/**
+ * TODO Understand
+ */
 static void	extended_action(char *c, int *received, int *client_pid, int *bit)
 {
 	ft_printf("%c", *c);
@@ -66,27 +69,33 @@ static void	ft_signal_handler(int signal, siginfo_t *info, void *context)
  *
  * SIGUSR1 (30): Defines bit 0
  * SIGUSR2 (31): Defines bit 1
+ *
+ * Usage of _Noreturn:
+ * https://learn.microsoft.com/fr-fr/cpp/c-language/noreturn?view=msvc-170
+ *
+ * @param void
+ *
+ * @return _Noreturn void
 */
-static void	ft_start_server(void)
+_Noreturn static void	ft_start_server(void)
 {
 	struct sigaction	sa;
 
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = ft_signal_handler;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
 	{
-		pause();
+		sigaction(SIGUSR1, &sa, NULL);
+		sigaction(SIGUSR2, &sa, NULL);
 	}
 }
 
 /**
- * TODO Understand while
+ * 1. Show PID
+ * 2. Start the server
 */
 int	main(void)
 {
 	ft_printf("PID: [%d]\n", getpid());
 	ft_start_server();
-	return (EXIT_FAILURE);
 }
