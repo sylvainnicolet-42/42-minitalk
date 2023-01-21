@@ -13,55 +13,97 @@
 #include "../../minitalk.h"
 
 /**
- * TODO Understand
+ * Display character.
+ * If character is "\0", send a signal SIGUSR2 with the kill() function.
+ *
+ * @param int *client_pid
+ * @param int *c
+ * @param int *nbr_bit
+ *
+ * @return void
  */
-static void	extended_action(char *c, int *received, int *client_pid, int *bit)
+static void	ft_print_server(const int *client_pid, char *c, int *nbr_bit)
 {
 	ft_printf("%c", *c);
 	if (*c == '\0')
 	{
-		*received = 0;
 		*c = 0;
-		if (kill(*client_pid, SIGUSR1) == -1)
-			ft_printf("Error...\n");
+		if (kill(*client_pid, SIGUSR2) == -1)
+			ft_print_error("Can't reach the client...");
 		return ;
 	}
-	*bit = 0;
+	*nbr_bit = 0;
 }
 
 /**
  * TODO Understand
  * Handle a signal.
  *
+ * 1. Check if "client PID" exist, if not assign it + reset variables.
+ * 2. Increment number of bit.
+ * 3. If number of bit is 8, display the character.
+ *
+ * -----------------------------------------------------------------------------
+ *
+ * Help:
+ * Operator "<<": Shift all the bits of a number to the left
+ * 				  by a certain number of positions.
+ * Operator "|": Returns a result which is 1 if one bit are 1.
+ *
+ * -----------------------------------------------------------------------------
+ *
+ * Example:
+ * Character "a" in ASCII = 97 and in binary = 0110 0001.
+ *
+ * Iteration 1:
+ * 1. c = 0.
+ * 2. (signal == SIGUSR2) -> false (0).
+ *	  (c |= 0)
+ *	  0000 (0)
+ *	  0000 (0)
+ *	  ----
+ *	  0000 = 0 -> c = 0.
+ * 3. (c <<= 1)
+ * 	  0 -> 00, c = 0.
+ *
+ * Iteration 2:
+ * 1. c = 0.
+ * 2. (signal == SIGUSR2) -> true (1).
+ *	  (c |= 1)
+ *	  0000 (0)
+ *	  0001 (1)
+ *	  ----
+ *	  0001 = 1 -> c = 1.
+ * 3. (c <<= 1)
+ * 	  0 -> 10, c = 2.
+ *
+ * -----------------------------------------------------------------------------
+ *
  * @param int signal
+ * @param siginfo_t *info
+ * @param void *context
+ *
+ * @return void
  */
 static void	ft_signal_handler(int signal, siginfo_t *info, void *context)
 {
 	static int	client_pid;
-	static int	bit;
+	static int	nbr_bit;
 	static char	c;
-	static int	received;
-	static int	current_pid;
 
 	(void) context;
-	if (!client_pid)
-		client_pid = info->si_pid;
-	current_pid = info->si_pid;
-	if (client_pid != current_pid)
+	if (client_pid != info->si_pid)
 	{
-		client_pid = current_pid;
-		bit = 0;
+		client_pid = info->si_pid;
+		nbr_bit = 0;
 		c = 0;
-		received = 0;
 	}
-	c |= (signal == SIGUSR2);
-	received++;
-	bit++;
-	if (bit == 8)
-		extended_action(&c, &received, &client_pid, &bit);
+	c |= SIGUSR2 == signal;
+	nbr_bit++;
+	if (nbr_bit == 8)
+		ft_print_server(&client_pid, &c, &nbr_bit);
 	c <<= 1;
-	usleep(100);
-	kill(client_pid, SIGUSR2);
+	kill(client_pid, SIGUSR1);
 }
 
 /**

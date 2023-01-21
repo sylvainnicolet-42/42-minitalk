@@ -41,8 +41,8 @@
  * 1. (1 << 7) Takes the value 1 (0001) and shifts 7 positions to the left to
  * 	  obtain (10000000), which is equal to 128 in decimal.
  * 2. (97 & 128)
- * 	  0110 0001
- *    1000 0000
+ * 	  0110 0001 (97)
+ *    1000 0000 (128)
  *    ---------
  *    0000 0000 = 0 -> Return 0 Because 64 == 0.
  *
@@ -72,12 +72,12 @@ static void	char_to_binary(char c, int pid)
 		if (c & (1 << i))
 		{
 			if (kill(pid, SIGUSR2) == -1)
-				ft_print_error("Can't reach the process...");
+				ft_print_error("Can't reach the server...");
 		}
 		else
 		{
 			if (kill(pid, SIGUSR1) == -1)
-				ft_print_error("Can't reach the process...");
+				ft_print_error("Can't reach the server...");
 		}
 		i--;
 		pause();
@@ -107,8 +107,8 @@ static void	ft_send_message(char *str, int pid)
 }
 
 /**
- * TODO Why only SIGUSR1?
- * Handle a signal.
+ * Handle only SIGUSR2 signal.
+ * A SIGUSR2 signal is sent from the server at the end.
  *
  * @param int signal
  * @param siginfo_t *info
@@ -118,13 +118,10 @@ static void	ft_send_message(char *str, int pid)
 */
 static void	ft_signal_handler(int signal, siginfo_t *info, void *context)
 {
-	int			client_pid;
-
+	(void) info;
 	(void) context;
-	if (signal == SIGUSR1)
+	if (signal == SIGUSR2)
 	{
-		client_pid = info->si_pid;
-		ft_printf("Response from [%d]\n", client_pid);
 		ft_print_success("Server signal successfully received ✅ !");
 	}
 }
@@ -167,8 +164,8 @@ int	main(int argc, char **argv)
 		ft_start_server();
 		server_pid = ft_atoi(argv[1]);
 		ft_send_message(argv[2], server_pid);
-		if (!sleep(10))
-			ft_print_error("Server signal was not received ❌ !");
+		if (!sleep(5))
+			ft_print_error("Server signal timeout ❌ !");
 	}
 	else
 		ft_print_error("Usage : ./client [pid] [message]");
