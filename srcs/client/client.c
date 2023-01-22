@@ -111,10 +111,10 @@ static void	ft_start_server(void)
 
 /**
  * 1. Check if there is 3 arguments.
- * 2. Convert PID to int.
- * 3. Start server to receive signal from server
+ * 2. Start server to receive signal from server
+ * 3. Convert PID to int.
  * 4. Send message to the desired process
- * 5. Wait a reply from server (max 10 seconds)
+ * 5. Wait a reply from server (max 5 seconds)
  *
  * @param int argc
  * @param char **argv
