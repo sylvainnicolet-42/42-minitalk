@@ -23,40 +23,6 @@
  * 4. Suspend the execution with the pause() function
  * 	  until a return signal is received.
  *
- * -----------------------------------------------------------------------------
- *
- * Help:
- * An octet or a byte consists of eight bits of information.
- * MSB = most significant bit.
- * Operator "<<": Shift all the bits of a number to the left
- * 				  by a certain number of positions.
- * Operator "&": Returns a result which is 1 if both bits are 1.
- *
- * -----------------------------------------------------------------------------
- *
- * Example:
- * Character "a" in ASCII = 97 and in binary = 0110 0001.
- *
- * Iteration 1:
- * 1. (1 << 7) Takes the value 1 (0001) and shifts 7 positions to the left to
- * 	  obtain (10000000), which is equal to 128 in decimal.
- * 2. (97 & 128)
- * 	  0110 0001 (97)
- *    1000 0000 (128)
- *    ---------
- *    0000 0000 = 0 -> Return 0 Because 64 == 0.
- *
- * Iteration 2:
- * 1. (1 << 6) Takes the value 1 (0001) and shifts 6 positions to the left to
- * 	  obtain (01000000), which is equal to 64 in decimal.
- * 2. (97 & 64)
- *    0110 0001
- *    0100 0000
- *    ---------
- *    0100 0000 = 64 -> Return 1 Because 64 != 0.
- *
- * -----------------------------------------------------------------------------
- *
  * @param char c
  * @param int pid
  *
