@@ -70,6 +70,7 @@ static void	ft_signal_handler(int signal, siginfo_t *info, void *context)
 		ft_print_server(&client_pid, &c, &nbr_bit);
 	else
 		nbr_bit++;
+	usleep(50);
 	if (kill(client_pid, SIGUSR1) == -1)
 		ft_print_error("Can't reach the client...");
 }

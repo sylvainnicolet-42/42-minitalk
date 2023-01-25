@@ -47,6 +47,7 @@ static void	char_to_binary(char c, int pid)
 		}
 		i--;
 		pause();
+		usleep(50);
 	}
 }
 
